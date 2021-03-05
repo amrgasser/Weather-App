@@ -18,15 +18,18 @@ document.getElementById("generate").addEventListener("click", () => {
   getData(baseURL, zipcode, apiKey).then((data) => {
     postData("/add", {
       city: data.city.name,
+      date: data.list[data.list.length - 1].dt_txt,
       temp: data.list[data.list.length - 1].main.temp,
       feelings: feelings,
     });
-    document.getElementById("date").innerHTML =
-      data.list[data.list.length - 1].dt_txt;
-    document.getElementById("temp").innerHTML =
-      data.list[data.list.length - 1].main.temp;
-    document.getElementById("content").innerHTML = feelings;
+    
   });
+  let projectData = getProjectData("/all");
+  let lastIndex = projectData.length-1;
+  document.getElementById("city").innerHTML =projectData[lastIndex].city;
+  document.getElementById("date").innerHTML =projectData[lastIndex].date;  
+  document.getElementById("temp").innerHTML =projectData[lastIndex].temp; 
+  document.getElementById("content").innerHTML = projectData[lastIndex].feelings;
 });
 
 /* Function called by event listener */
