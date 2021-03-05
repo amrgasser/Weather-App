@@ -42,5 +42,7 @@ app.get("/all", function (req, res) {
 // Post Route
 app.post("/add", function (req, res) {
   projectData.push(req.body);
-  console.log(projectData[0]?.list);
+  
+  console.log(projectData);
+  
 });

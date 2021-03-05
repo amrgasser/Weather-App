@@ -14,22 +14,29 @@ const apiKey = "&appid=8351f14c945af4642ed5f1e95dc22839";
 document.getElementById("generate").addEventListener("click", () => {
   zipcode = document.getElementById("zip").value;
   feelings = document.getElementById("feelings").value;
-document.getElementById("content").innerHTML=feelings;
-  let data = getData(baseURL, zipcode, apiKey);
-  
 
-
+  getData(baseURL, zipcode, apiKey).then((data) => {
+    postData("/add", {
+      city: data.city.name,
+      temp: data.list[data.list.length - 1].main.temp,
+      feelings: feelings,
+    });
+    document.getElementById("date").innerHTML =
+      data.list[data.list.length - 1].dt_txt;
+    document.getElementById("temp").innerHTML =
+      data.list[data.list.length - 1].main.temp;
+    document.getElementById("content").innerHTML = feelings;
+  });
 });
 
 /* Function called by event listener */
-
 
 /* Function to GET Web API Data*/
 const getData = async (baseURL, zipcode, key) => {
   const res = await fetch(baseURL + zipcode + key);
   try {
     const data = await res.json();
-    console.log(data.list[0].dt_text);
+    console.log();
     // document.getElementById("date").innerHTML=data.list[0].clouds.dt_text;
 
     return data;
@@ -62,8 +69,7 @@ const postData = async (url = "", data = {}) => {
 
 /* Function to GET Project Data */
 const getProjectData = async (url = "") => {
-  
-  const response = await fetch(url)
+  const response = await fetch(url);
   try {
     const newData = await response.json();
     console.log(newData);
@@ -72,4 +78,3 @@ const getProjectData = async (url = "") => {
     console.log("error", error);
   }
 };
-
